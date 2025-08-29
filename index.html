@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Service Order - AapkaBrand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #d53369, #daae51);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 100% 100%;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .service-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #d53369;
+        }
+        
+        .service-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .service-price {
+            color: #d53369;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #d53369;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(213, 51, 105, 0.2);
+        }
+        
+        .input-group small {
+            display: block;
+            margin-top: 5px;
+            color: #718096;
+        }
+        
+        .next-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #2c3e50, #4a6580);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .next-btn:hover {
+            background: linear-gradient(to right, #1a252f, #2c3e50);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .next-btn i {
+            margin-left: 10px;
+        }
+        
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #d53369;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-container {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            background: #4ade80;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            animation: scaleUp 0.5s ease;
+        }
+        
+        .success-icon i {
+            color: white;
+            font-size: 32px;
+        }
+        
+        @keyframes scaleUp {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .success-message {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 30px;
+        }
+        
+        .payment-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(to right, #d53369, #daae51);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .payment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #d53369;
+            text-decoration: none;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Instagram Service Order</h1>
+            <p>Enter your Instagram details to proceed</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="service-info">
+                <div class="service-name">1,000 Followers [Basic Quality]</div>
+                <div class="service-price">Price: ₹29</div>
+            </div>
+            
+            <form id="instagramForm">
+                <div class="input-group">
+                    <label for="instagramId">Instagram Username</label>
+                    <input type="text" id="instagramId" placeholder="Enter your Instagram username" required>
+                    <small>Enter without @ symbol (e.g., "username" not "@username")</small>
+                    <div class="error-message" id="instagramError">Please enter a valid Instagram username</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="postLink">Post or Reel Link (Optional)</label>
+                    <input type="url" id="postLink" placeholder="Paste your post or reel link here">
+                    <small>Required for likes, comments, or views services</small>
+                </div>
+                
+                <button type="button" class="next-btn" onclick="validateForm()">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="loading-container" id="loadingContainer">
+                <div class="loader"></div>
+                <p>Validating your Instagram ID...</p>
+            </div>
+            
+            <div class="success-container" id="successContainer">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="success-message">
+                    Instagram ID is valid! Redirecting to payment...
+                </div>
+                <a href="https://aapkabrand.com/payment" class="payment-btn" id="paymentButton">
+                    Proceed to Payment <i class="fas fa-lock"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Powered by <a href="#">AapkaBrand</a></p>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            const instagramId = document.getElementById('instagramId').value.trim();
+            const errorElement = document.getElementById('instagramError');
+            const form = document.getElementById('instagramForm');
+            const loadingContainer = document.getElementById('loadingContainer');
+            
+            // Basic validation
+            if (!instagramId) {
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            // Hide form and show loading
+            form.style.display = 'none';
+            loadingContainer.style.display = 'block';
+            
+            // Simulate validation process
+            setTimeout(function() {
+                loadingContainer.style.display = 'none';
+                document.getElementById('successContainer').style.display = 'block';
+                
+                // Automatically redirect after 3 seconds
+                setTimeout(function() {
+                    window.location.href = "https://aapkabrand.com/payment";
+                }, 3000);
+                
+            }, 2000);
+        }
+        
+        // Hide error when user starts typing
+        document.getElementById('instagramId').addEventListener('input', function() {
+            document.getElementById('instagramError').style.display = 'none';
+        });
+        
+        // Allow form submission with Enter key
+        document.getElementById('instagramId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validateForm();
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
